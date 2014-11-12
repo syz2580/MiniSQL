@@ -1,19 +1,22 @@
 #ifndef __INTERPRET_H__
 #define __INTERPRET_H__
 
-//#include "catalog_manager.h"
+#include "CatalogManager.h"
+#include "RecordManager.h"
+#include "IndexManager.h"
 
+extern CatalogManager catalog; 
+extern RecordManager  record;
 
-class Interpret {
+class Interpreter{
 public:
-	//解析树,所有的命令均可以反映到这样一棵树上
-	int m_operation;		//要执行的操作或错误代码,用宏表示
-	string m_tabname;		//要操作的表格名
-	string m_indname;		//要操作的索引名
+	int m_operation;
+	string m_tabname;
+	string m_indname;
 	string m_colname;
 	vector<Attribute> column;
-	vector<Condition> condition;			//要比较的where字句的链表
-	Row row;		//要插入的值链表
+	vector<Condition> condition;
+	Row row;
 	Table getTableInfo;
 	Index getIndexInfo;
 	int PrimaryKeyPosition;
@@ -21,7 +24,7 @@ public:
 	vector<Condition> UniqueCondition;
 	//static CCatalogManager Catalog;
 	friend void Execute();
-	Interpret(){
+	Interpreter(){
 		m_operation =UNKNOW;
 		m_tabname = "";
 		m_indname = "";
@@ -29,18 +32,10 @@ public:
 		PrimaryKeyPosition=-1;	
 		UniquePostion=-1;
 	}
-	~Interpret(){}
+	~Interpreter(){}
 
 	void Parse(char* command);
-	/*void ExecSelect();
-	void ExecDelete();
-	void ExecDropTable();
-	void ExecDropIndex();
-	void ExecCreateTable();
-	void ExecCreateIndex();
-	void ExecInsert();*/
-	//void Execute();
-	void initcol();
+    void initcol();
 	void initcond();
 	void initvalue();
 	void inittable(){
@@ -56,21 +51,9 @@ public:
 	bool GetWord(string & src, string & des);
 
 protected:
-	
-	void MakeInitilate(){
-		m_operation =UNKNOW;
-		m_tabname = "";
-		m_indname = "";
-		initcol();
-		initcond();
-		initvalue();
-		inittable();
-		initindex();
-	}
-
+	void MakeInitilate();
 	//bool GetWord(string & src, string & des);
 	bool GetStr(string & src, string & des);
-
 	short int IsInt(const char *);
 	short int IsFloat(char *input);
 };

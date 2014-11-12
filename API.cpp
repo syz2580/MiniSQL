@@ -1,5 +1,4 @@
-#include "Interpret.cpp"
-#include "IndexManager.h"
+#include "Interpreter.h"
 
 void welcome();
 
@@ -8,7 +7,7 @@ void welcome();
 RecordManager record;
 IndexManager indexm;
 CatalogManager catalog;
-Interpret parsetree;
+Interpreter parsetree;
 BufferManager buf;
 
 void ShowResult(Data data, Table tableinfor, vector<Attribute> column);
