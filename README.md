@@ -1,4 +1,5 @@
 MiniSQL
 =======
-TesterAPI.cpp can generate the executable file;
-Makefile should be re-written after finishing the dividing of .h & .cpp in each module; before that is done, try compiling solely TesterAPI.cpp.
+API.cpp is now at the highest level instead of TesterAPI.cpp in the previous version;
+
+makefile is now available for g++ equipped platform, simply execute "make clean" "make" will generate "sql" which is executable.
