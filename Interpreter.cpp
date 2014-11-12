@@ -1,12 +1,7 @@
-#include "CatalogManager.h"
-#include "Interpret.h"
-#include "RecordManager.h"
+#include "Interpreter.h"
 
-//static CCatalogManager* m_pCatalog = new CCatalogManager;
-extern CatalogManager catalog; 
-extern RecordManager  record;
 //This function is used to initiate the 'column' structure
-void Interpret::initcol()
+void Interpreter::initcol()
 {
 	if(column.size()>0){
 		column.clear();
@@ -14,7 +9,7 @@ void Interpret::initcol()
 }
 
 //This function is used to initiate the 'condition' structure
-void Interpret::initcond()
+void Interpreter::initcond()
 {
 	if(condition.size()>0){
 		condition.clear();
@@ -22,7 +17,7 @@ void Interpret::initcond()
 }
 
 //This function is used to initiate the 'insertvalue' structure
-void Interpret::initvalue()
+void Interpreter::initvalue()
 {
 	if(row.columns.size()>0){
 		row.columns.clear();
@@ -31,7 +26,7 @@ void Interpret::initvalue()
 
 //This function is used to get a word ( maybe a 'token' is more appropriate )
 //from the 'src' string and copy it into the 'des' string
-bool Interpret::GetWord(string & src, string & des)
+bool Interpreter::GetWord(string & src, string & des)
 {   
 	des.clear();
 	unsigned int srcpos = 0, despos = 0;
@@ -100,7 +95,7 @@ bool Interpret::GetWord(string & src, string & des)
 	return true;
 }
 
-bool Interpret::GetStr(string& src, string& des)
+bool Interpreter::GetStr(string& src, string& des)
 {
 	unsigned int pos=0;
 	des.clear();
@@ -124,7 +119,7 @@ bool Interpret::GetStr(string& src, string& des)
 
 //This function is used to parse the 'command' string which comes from user's 
 //input, and return a corresponding parse parsetree
-void Interpret::Parse(char* command)
+void Interpreter::Parse(char* command)
 {
 	string word ="";
 	string temp = command;
@@ -933,7 +928,7 @@ void Interpret::Parse(char* command)
 
 //This function is used to select a appropriate API function according to the 
 //'operation' member of the parse parsetree, otherwise print out an error message
-//void Interpret::Execute()
+//void Interpreter::Execute()
 //{	
 //	int i;
 //	int j;
@@ -1077,7 +1072,7 @@ void Interpret::Parse(char* command)
 
 //This function is used to check is the string 'input' represented an int variable
 //return 1 if is, 0 otherwise
-short int Interpret::IsInt(const char *input)
+short int Interpreter::IsInt(const char *input)
 {
 	int i;
 	int length = strlen(input);
@@ -1093,7 +1088,7 @@ short int Interpret::IsInt(const char *input)
 
 //This function is used to check is the string 'input' represented an float variable
 //return 1 if is, 0 otherwise
-short int Interpret::IsFloat(char *input)
+short int Interpreter::IsFloat(char *input)
 {
 		int dot = 0;
 		int i;
@@ -1115,5 +1110,15 @@ short int Interpret::IsFloat(char *input)
 			}
 		}
 		return 1;
+}
+void Interpreter::MakeInitilate(){
+		m_operation =UNKNOW;
+		m_tabname = "";
+		m_indname = "";
+		initcol();
+		initcond();
+		initvalue();
+		inittable();
+		initindex();
 }
 
