@@ -1,7 +1,6 @@
 #ifndef _INDEX_H_
 #define _INDEX_H_
 #include "BufferManager.h"
-#define POINTERLENGTH 5
 extern BufferManager buf;
 
 class IndexLeaf{
@@ -18,7 +17,7 @@ public:
 class IndexBranch{//not a leaf, normal node
 public:
 	string key;
-	int ptrChild;	//block pointer,��֬ի��������ν��ָ����ʵ����block���ļ��е�ƫ��
+	int ptrChild;
 	IndexBranch():
 		key(""), ptrChild(0){}
 	IndexBranch(string k, int ptrC):
@@ -65,15 +64,13 @@ public:
 };
 
 class IndexManager{
+	string getColumnValue(const Table& tableinfor, const Index& indexinfor, string row);
 public:
 	void createIndex(const Table& tableinfor, Index& indexinfor);
 	IndexBranch insertValue(Index& indexinfor, IndexLeaf node, int blockOffset = 0);
 	Data selectEqual(const Table& tableinfor, const Index& indexinfor, string key, int blockOffset = 0);//start from the root and look down
 	Data selectBetween(const Table& tableinfor, const Index& indexinfor, string keyFrom, string keyTo, int blockOffset = 0);
 	Row splitRow(Table tableinfor, string row);
-private:
-	string getColumnValue(const Table& tableinfor, const Index& indexinfor, string row);
-public:
 	void dropIndex(Index& indexinfor);
 	void deleteValue(){}
 };
