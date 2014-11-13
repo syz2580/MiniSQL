@@ -208,7 +208,7 @@ short int IsComEnd(char *input)
 {
 	unsigned int next = strlen(input) - 1;
 	char prev = ' ';
-	while(next >= 0 && (prev == '\t' || prev ==' '))
+	while(prev == '\t' || prev ==' ')
 	{
 		prev = input[next];
 		next --;
@@ -245,7 +245,7 @@ int main()
 	{
 		strcpy(command, "");//command����
 		ComEnd = 0;
-		cout<<"YYYSQL>>";
+		cout<<" Adward's Database >>";
  		while(!ComEnd)
 		{
 	/*		count ++;
@@ -254,8 +254,8 @@ int main()
 			gets(input);
 			if(IsComEnd(input))
 				ComEnd = 1;
-				strcat(command, input);//����ֺŽ���֮ǰ����������ֺ�
-			AddSeperator(command);//��command������ַ��һ��ո����ַ��β�����ڿո����'\0'
+				strcat(command, input);
+			AddSeperator(command);
 		}
 		parsetree.Parse(command);
 		Execute();
@@ -265,7 +265,7 @@ int main()
 }
 
 void welcome(){
-	cout << "Welcome to the YYYSQL Database System!" << endl;
+	cout << "____Welcome to our micro database system____" << endl;
 }
 
 void ShowResult(Data data, Table tableinfor, vector<Attribute> column){

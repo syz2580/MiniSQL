@@ -54,7 +54,7 @@ Branch::~Branch(){
 		
     //nodelist
     if(nodelist.size() == 0){
-        cout << "Oh, no no no!! That's impossible." << endl;
+        cout << "Undefined action!" << endl;
         exit(0);
     }
 
@@ -178,7 +178,7 @@ Leaf::~Leaf(){
 		
     //nodelist
     if(nodelist.size() == 0){
-        cout << "Oh, no no no!! That's impossible." << endl;
+        cout << "Undefined action!" << endl;
         exit(0);
     }
 
@@ -457,8 +457,7 @@ Data IndexManager::selectEqual(const Table& tableinfor, const Index& indexinfor,
         list<IndexBranch>::iterator i = branch.nodelist.begin();
         for(i = branch.nodelist.begin(); i != branch.nodelist.end(); i++){
             if((*i).key > key){
-                //cout << (*i).key << "==" << key << endl;
-                i--;//�õ�(*i) ��ߵ�ָ���λ��
+                i--;
                 break;
             }
         }
@@ -555,17 +554,3 @@ void IndexManager::dropIndex(Index& indexinfor){
     else
     buf.setInvalid(filename);
 }
-
-/*	void dropIndex(const Table& tableinfor){
-    string filename = tableinfor.name + ".index";
-    if( remove(filename.c_str()) != 0 )
-    return;//perror( "Error deleting file" );
-    else
-    buf.setInvalid(filename);
-	}
-*/
-/*	void dropTable(Table& tableinfor){
-    string filename = tableinfor.name + ".index";
-    buf.setInvalid(filename);
-	}
-*/

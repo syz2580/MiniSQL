@@ -182,12 +182,11 @@ void BufferManager::setInvalid(string filename){//when a file is deleted, a tabl
 void BufferManager::ShowBuffer(int from, int to){
     const int max = 30;
     if(!(0 <= from && from <= to && to < MAXBLOCKNUMBER)){
-        cout << "没有酱紫的buffer" <<endl;
+        cout << "No such buffer!" <<endl;
         return;
     }
     if((to-from) > max){
-        cout << "你想烧了我的电脑啊，慢点儿显示点行不行" << endl;
-        cout << "一次最多显示" << max <<"个buffer(s)" << endl;
+        cout << max <<" buffers at most!" << endl;
         return; 
     }
     for(int i = from; i <= to; i++){

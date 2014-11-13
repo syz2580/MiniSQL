@@ -61,6 +61,7 @@
 #define WORDLEN		100
 #define VALLEN		300
 #define NAMELEN		100
+#define POINTERLENGTH 5
 
 #include <iostream>
 #include <fstream>
