@@ -28,8 +28,8 @@ int main()
 	char input[INPUTLEN] = "";
 	char word[WORDLEN] = "";
 	short int ComEnd = 0;
-	/*FILE *stream;
-	stream=freopen("instruction10.txt","r",stdin);*/
+	FILE *stream;
+	stream=freopen("D:\\test.txt","r",stdin);
 	/*FILE *fileout;
 	fileout=freopen("result.txt","w",stdout);*/
 
@@ -58,7 +58,7 @@ int main()
 }
 
 void welcome(){
-	cout << "____Welcome to our micro database system____" << endl;
+	cout << "----------Welcome to MiniSQL----------" << endl;
 }
 
 void ShowResult(Data data, Table tableinfor, vector<Attribute> column){
@@ -211,10 +211,10 @@ void Execute()
 		parsetree.getTableInfo.attriNum=parsetree.getTableInfo.attributes.size();
 		catalog.createTable(parsetree.getTableInfo);
 		record.createTable(parsetree.getTableInfo);
-		cout<<"Table "<<parsetree.getTableInfo.name<<" has been created successfully"<<endl;
+		cout<<"Table "<<parsetree.getTableInfo.name<<" is created successfully"<<endl;
 		break;
 	case TABLEEXISTED:
-		cout<<"The table has been created,please check the database"<<endl;
+		cout<<"CREATE ERROR: Table existed"<<endl;
 		break;
 	case DRPTAB:
 		record.dropTable(parsetree.getTableInfo);
@@ -224,21 +224,21 @@ void Execute()
 				indexm.dropIndex(indexinfor);
 		}
 		catalog.dropTable(parsetree.getTableInfo);
-		cout<<"Table "<<parsetree.getTableInfo.name<<" has been dropped successfully"<<endl;
+		cout<<"Table "<<parsetree.getTableInfo.name<<" is dropped successfully"<<endl;
 		break;
 	case INSERT:
 		tableinfor = parsetree.getTableInfo;
 		if(parsetree.PrimaryKeyPosition==-1&&parsetree.UniquePostion==-1){
 			record.insertValue(tableinfor, parsetree.row);
 			catalog.update(tableinfor);
-			cout<<"One record has been inserted successfully"<<endl;
+			cout<<"Insert successfully"<<endl;
 			break;
 		}
 		if(parsetree.PrimaryKeyPosition!=-1)
 		{
 			data=record.select(tableinfor, parsetree.condition);
 			if(data.rows.size()>0){
-				cout<<"Primary Key Redundancy occurs, thus insertion failed"<<endl;
+				cout<<"INSERT ERROR: Primary key redundancy"<<endl;
 				break;
 			}
 		}
@@ -246,16 +246,16 @@ void Execute()
 			
 			data=record.select(tableinfor, parsetree.UniqueCondition);
 			if(data.rows.size()>0){
-				cout<<"Unique Value Redundancy occurs, thus insertion failed"<<endl;
+				cout<<"INSERT ERROR: Unique value redundancy"<<endl;
 				break;
 			}
 		}
 		record.insertValue(tableinfor,parsetree.row);
 		catalog.update(tableinfor);
-		cout<<"One record has been inserted successfully"<<endl;
+		cout<<"Insert successfully"<<endl;
 		break;
 	case INSERTERR:
-		cout << "Incorrect usage of \"insert\" query! Please check your input!" << endl;
+		cout << "Syntax ERROR: Incorrect usage of \"insert\"." << endl;
 		break;
 	case SELECT_NOWHERE_CAULSE:
 		tableinfor = parsetree.getTableInfo;
@@ -263,7 +263,7 @@ void Execute()
 		if(data.rows.size()!=0)
 			ShowResult( data, tableinfor, parsetree.column);
 		else{
-			cout << "No data is found!!!" << endl;
+			cout << "No data is found." << endl;
 		}
 		break;
 	case SELECT_WHERE_CAULSE:
@@ -292,89 +292,89 @@ void Execute()
 		if(data.rows.size()!=0)
 			ShowResult( data, tableinfor, parsetree.column);
 		else{
-			cout << "No data is found!!!" << endl;
+			cout << "No data is found." << endl;
 		}
 		break;
 	case DELETE:
 		rowCount = record.deleteValue(parsetree.getTableInfo,parsetree.condition);
-		cout<< rowCount <<"  rows have been deleted."<<endl;
+		cout<< rowCount <<"  tuples are deleted."<<endl;
 		break;
 	case CREIND:
-		tableinfor = parsetree.getTableInfo;
 		indexinfor = parsetree.getIndexInfo;
-		if(!tableinfor.attributes[indexinfor.column].isPrimeryKey&&!tableinfor.attributes[indexinfor.column].isUnique){//����primary key�������Խ�index
+		tableinfor = parsetree.getTableInfo;
+		if(!tableinfor.attributes[indexinfor.column].isPrimeryKey && !tableinfor.attributes[indexinfor.column].isUnique){//����primary key�������Խ�index
 			cout << "Column " << tableinfor.attributes[indexinfor.column].name <<"  is not unique."<< endl;
 			break;
 		}
 		catalog.createIndex(indexinfor);
 		indexm.createIndex(tableinfor, indexinfor);
 		catalog.update(indexinfor);
-		cout<<"The index "<< indexinfor.index_name << "has been created successfully"<<endl;
+		cout<<"Index "<< indexinfor.index_name << "is created successfully."<<endl;
 		break;
 	case INDEXERROR:
-		cout<<"The index on primary key of table has been existed"<<endl;
+		cout<<"ERROR: Index existed."<<endl;
 		break;
 	case DRPIND:
 		indexinfor = catalog.getIndexInformation(parsetree.m_indname);
 		if(indexinfor.index_name == ""){
-			cout << "Index" << parsetree.m_indname << "does not exist!" << endl;
+			cout << "ERROR: Index" << parsetree.m_indname << "does not exist!" << endl;
 		}
 		indexm.dropIndex(indexinfor);
 		catalog.dropIndex(parsetree.m_indname);
-		cout<<"The index has been dropped successfully"<<endl;
+		cout<<"The index is dropped successfully"<<endl;
 		break;
 	case CREINDERR:
-		cout << "Incorrect usage of \"create index\" query! Please check your input!" << endl;
+		cout << "Syntax ERROR: Incorrect usage of \"create index\" query." << endl;
 		break;
 	case QUIT:
-		cout << "Have a good day! Press any key to close this window." << endl;
-		getchar();
+		cout << "Bye Bye~" << endl;
+		system("pause");
 		exit(0);
 		break;
 	case EMPTY:
-		cout << "Empty query! Please enter your command!" << endl;
+		cout << "Query Empty." << endl;
 		break;
 	case UNKNOW:
-		cout << "UNKNOW query! Please check your input!" << endl;
+		cout << "Syntax ERROR: Please check your query." << endl;
 		break;
 	case SELERR:
-		cout << "Incorrect usage of \"select\" query! Please check your input!" << endl;
+		cout << "Syntax ERROR: Incorrect usage of \"select\" query." << endl;
 		break;
 	case CRETABERR:
-		cout << "Incorrect usage of \"create table\" query! Please check your input!" << endl;
+		cout << "Syntax ERROR: Incorrect usage of \"create table\" query." << endl;
 		break;
 	case DELETEERR:
-		cout << "Incorrect usage of \"delete from\" query! Please check your input!" << endl;
+		cout << "Syntax ERROR: Incorrect usage of \"delete from\" query." << endl;
 		break;
 	case DRPTABERR:
-		cout << "Incorrect usage of \"drop table\" query! Please check your input!" << endl;
+		cout << "Syntax ERROR: Incorrect usage of \"drop table\" query." << endl;
 		break;
 	case DRPINDERR:
-		cout << "Incorrect usage of \"drop index\" query! Please check your input!" << endl;
+		cout << "Syntax ERROR: Incorrect usage of \"drop index\" query." << endl;
 		break;
 	case VOIDPRI:
-		cout << "Error: invalid primary key! Please check your input!" << endl;
+		cout << "ERROR: Invalid primary key." << endl;
 		break;
 	case VOIDUNI:
-		cout << "Error: invalid unique key! Please check your input!" << endl;
+		cout << "ERROR: Invalid unique key." << endl;
 		break;
 	case CHARBOUD:
-		cout << "Error: only 1~255 charactors is allowed! Please check your input!" << endl;
+		cout << "ERROR: Too long query. Only 1~255 charactors is allowed." << endl;
 		break;
 	case NOPRIKEY:
-		cout << "No primary key is defined! Please check your input!" << endl;
+		cout << "ERROR: Please define a primary key." << endl;
 		break;
 	case TABLEERROR:
-		cout<<"Table is not existed,please check the database"<<endl;
+		cout << "ERROR: Table is not existed."<<endl;
 		break;
 	case INDEXEROR:
-		cout<<"Index is not existed,please check the database"<<endl;
+		cout << "ERROR: Index is not existed."<<endl;
 		break;
 	case COLUMNERROR:
-		cout<<"One column is not existed"<<endl;
+		cout << "ERROR: Column is not existed"<<endl;
 		break;
 	case INSERTNUMBERERROR:
-		cout<<"The column number is not according to the columns in our database"<<endl;
+		cout << "ERROR: The amount of the columns is not matched."<<endl;
 		break;
 	}
 	
